@@ -8,7 +8,7 @@ services:
     build: .
 
     # Specify that the app service depends on the world service,
-    # ensuring that the database starts before the app
+    # ensuring that the database starts before the app.
     depends_on:
       - world
 
