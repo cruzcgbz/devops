@@ -5,7 +5,7 @@ ENTRYPOINT ["java", "-jar", "devops.jar", "world:3306", "10000"]
 
 
 # Use a stable, slim Java version for smaller image size
-FROM openjdk:17-jdk-slim
+FROM openjdk:latest
 
 # Set up a non-root user for security
 RUN useradd -ms /bin/bash appuser

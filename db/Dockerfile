@@ -1,5 +1,5 @@
 # Specify a stable MySQL version
-FROM mysql/mysql-server:8.0
+FROM mysql/mysql-server:latest
 
 # Copy initialization script
 COPY world.sql /docker-entrypoint-initdb.d
