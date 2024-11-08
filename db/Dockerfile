@@ -1,6 +1,11 @@
-FROM openjdk:latest
-COPY ./target/devops.jar /tmp
-WORKDIR /tmp
-# change last parameter to 10000 if running on github actions
-#if running locally and database aleady started delay can be zero
-ENTRYPOINT ["java", "-jar", "devops.jar", "world:3306", "0"]
+# Specify a stable MySQL version
+FROM mysql/mysql-server:8.0
+
+# Copy initialization script
+COPY world.sql /docker-entrypoint-initdb.d
+
+# Set up environment variables
+ENV MYSQL_ROOT_PASSWORD=example
+ENV MYSQL_ROOT_HOST=%
+ENV MYSQL_DATABASE=world
+

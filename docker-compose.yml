@@ -1,12 +1,37 @@
+# Specify the version of the Docker Compose file format
 version: '3'
+
 services:
-  # Build app from Dockerfile in same folder
+  # Define the app service
   app:
+    # Build the app container using the Dockerfile in the current directory
     build: .
 
-  # Build the db as name world from the Dockerfile in the db folder
+    # Specify that the app service depends on the world service,
+    # ensuring that the database starts before the app
+    depends_on:
+      - world
+
+    # Set environment variables to configure the app's database connection
+    environment:
+      - DATABASE_HOST=world       # Hostname for the database container
+      - DATABASE_PORT=3306         # Database port to connect to
+
+  # Define the world service (MySQL database)
   world:
+    # Build the world service using the Dockerfile located in the db directory
     build: db/.
-    # keep port forwarding so we can test app locally without docker
+
+    # Set a custom container name for easier identification
+    container_name: mysql_world_db
+
+    # Expose port 3306 on the world container and map it to 33060 on the host,
+    # allowing access to the MySQL database from the host at localhost:33060
     ports:
       - "33060:3306"
+
+    # Set environment variables for initial MySQL configuration
+    environment:
+      MYSQL_ROOT_PASSWORD: example    # Password for the MySQL root user
+      MYSQL_DATABASE: world           # Name of the default database created at startup
+      MYSQL_ROOT_HOST: '%'            # Allow root access from any host (use cautiously)
