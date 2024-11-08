@@ -1,7 +1,16 @@
-# DevOps3
+<!--
+Cecil Cruz Docker APP 0.1
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/cruzcgbz/sem/main.yml?branch=master)
 
-Cut down version of First Three Labs for SET09623/09823  
+[![LICENSE](https://img.shields.io/github/license/cruzcgbz/sem.svg?style=flat-square)](https://github.com/cruzcgbz/sem/blob/master/LICENSE)
 
-![workflow](https://github.com/Kevin-Sim/DevOps3/actions/workflows/main.yml/badge.svg)
+[![Releases](https://img.shields.io/github/release/cruzcgbz/sem/all.svg?style=flat-square)](https://github.com/cruzcgbz/sem/releases)
 
-![GitHub License](https://img.shields.io/github/license/Kevin-Sim/DevOps3)
+![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/cruzcgbz/sem/main.yml?branch=<branch>)
+-->
+
+# Software Engineering Methods
+* Master Build Status  ![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/cruzcgbz/sem/main.yml?branch=master)
+* Develop Branch Status ![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/cruzcgbz/sem/main.yml?branch=develop)
+* License [![LICENSE](https://img.shields.io/github/license/cruzcgbz/sem.svg?style=flat-square)](https://github.com/cruzcgbz/sem/blob/master/LICENSE)
+* Release [![Releases](https://img.shields.io/github/release/cruzcgbz/sem/all.svg?style=flat-square)](https://github.com/cruzcgbz/sem/releases)
