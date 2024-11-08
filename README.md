@@ -1,5 +1,5 @@
 <!--
-Cecil Cruz Docker APP 0.1
+Cecil Cruz Docker APP 0.2
 ![GitHub Workflow Status (branch)](https://img.shields.io/github/actions/workflow/status/cruzcgbz/sem/main.yml?branch=master)
 
 [![LICENSE](https://img.shields.io/github/license/cruzcgbz/sem.svg?style=flat-square)](https://github.com/cruzcgbz/sem/blob/master/LICENSE)
