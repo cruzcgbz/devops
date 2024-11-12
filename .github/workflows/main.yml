@@ -19,3 +19,19 @@ jobs:
         run: docker compose up --abort-on-container-exit
       - name: view logs
         run: docker logs devops-app-1
+        # copy from docker container back to our execution environment  
+      - name: Copy Output
+        run: docker container cp devops-app-1:./tmp/output ./
+      # check files on actions environment 
+      # run: | allows multiple commands
+      - name: List dirs
+        run: |
+          pwd
+          ls
+      #copy output folder to new branch called output
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
+          publish_branch: output
