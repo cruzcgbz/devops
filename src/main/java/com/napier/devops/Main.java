@@ -1,26 +1,28 @@
 package com.napier.devops;
 
+import javax.swing.SwingUtilities;
 import java.io.IOException;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-
     public static void main(String[] args) throws IOException {
-        // Create new Application
+        // Create new Application instance
         App a = new App();
 
         if (args.length < 1) {
-            //local
+            // Local connection
             a.connect("localhost:33060", 0);
         } else {
-            //docker parameters passed from Dockerfile
+            // Docker connection parameters passed from Dockerfile
             a.connect(args[0], Integer.parseInt(args[1]));
         }
 
-        a.report1();
+        // Launch the GUI for searching
+        SwingUtilities.invokeLater(() -> {
+            SearchGUI searchGUI = new SearchGUI(a);
+            searchGUI.createAndShowGUI();
+        });
 
-        // Disconnect from database
-        a.disconnect();
+        // Ensure the database connection is closed when GUI exits
+        Runtime.getRuntime().addShutdownHook(new Thread(a::disconnect));
     }
 }
