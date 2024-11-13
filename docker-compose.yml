@@ -1,11 +1,12 @@
 version: '3'
 services:
-  # Build app from Dockerfile in same folder
   app:
     build: .
-
-  # Build the db as name world from the Dockerfile in the db folder
+    depends_on:
+      - world
   world:
     build: db/.
     ports:
       - "33060:3306"
+    volumes:
+      - ./db/data:/var/lib/mysql
