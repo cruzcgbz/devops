@@ -12,6 +12,22 @@ public class App {
      * Connection to MySQL database.
      */
     private Connection con = null;
+    private static final String OUTPUT_DIR = "/tmp/output";  // Fixed path in container
+    public App() {
+        // Create output directory in constructor
+        createOutputDirectory();
+    }
+    private void createOutputDirectory() {
+        File outputDir = new File(OUTPUT_DIR);
+        if (!outputDir.exists()) {
+            boolean created = outputDir.mkdirs();
+            if (created) {
+                System.out.println("Created output directory: " + OUTPUT_DIR);
+            } else {
+                System.err.println("Failed to create output directory: " + OUTPUT_DIR);
+            }
+        }
+    }
 
     /**
      * Connects to the MySQL database.
@@ -123,17 +139,17 @@ public class App {
      * @throws IOException if an I/O error occurs
      */
     private void writeToFile(String content, String filePath) throws IOException {
-        File outputDir = new File("./output/");
-        if (!outputDir.exists()) {
-            outputDir.mkdir();
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(new File(filePath)))) {
+        File file = new File(OUTPUT_DIR, new File(filePath).getName());
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write(content);
         } catch (IOException e) {
-            throw new IOException("Error writing to file: " + filePath, e);
+            throw new IOException("Error writing to file: " + file.getPath(), e);
         }
     }
+
+
+
+
     public void report1(String searchTerm) throws IOException {
         StringBuilder sb = new StringBuilder();
         try {
