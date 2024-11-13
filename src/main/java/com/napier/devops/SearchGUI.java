@@ -17,19 +17,23 @@ public class SearchGUI {
         // Create frame
         JFrame frame = new JFrame("Country Search");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 400);  // Increased frame size for better layout
+        frame.setSize(500, 400);
 
         // Set up the panel with a more flexible layout
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout(10, 10)); // Space between components
 
-        // Top panel for label and search field
+        // Top panel for label, search field, and search type dropdown
         JPanel topPanel = new JPanel();
-        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));  // Left-align components with space
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
 
-        JLabel label = new JLabel("Enter Country Name:");
+        JLabel label = new JLabel("Enter Search Term:");
         JTextField searchField = new JTextField(20);
         JButton searchButton = new JButton("Search");
+
+        // Add a dropdown for selecting search field type
+        String[] searchOptions = {"Search by All Fields", "Code", "Name", "Continent", "Region", "Population"};
+        JComboBox<String> searchFieldCombo = new JComboBox<>(searchOptions);
 
         // Create a text area for results with improved font and scroll
         JTextArea resultArea = new JTextArea(10, 30);
@@ -42,6 +46,7 @@ public class SearchGUI {
         topPanel.add(label);
         topPanel.add(searchField);
         topPanel.add(searchButton);
+        topPanel.add(searchFieldCombo); // Add dropdown to panel
 
         // Add topPanel and resultArea to main panel
         panel.add(topPanel, BorderLayout.NORTH);
@@ -75,29 +80,22 @@ public class SearchGUI {
             }
         });
 
-
-        // Action listener for search button
-        // Action listener for search button
-        // Action listener for search button
         // Action listener for search button
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String searchTerm = searchField.getText();
+                String searchType = (String) searchFieldCombo.getSelectedItem();
                 resultArea.setText("Searching...\n"); // Provide immediate feedback
                 try {
-                    // Call the updated method and get the result
-                    String results = app.searchCountryByName(searchTerm, "./output/report1.txt");
+                    // Call the updated method based on selected search type
+                    String results = app.searchCountryByFields(searchTerm, searchType, "./output/report1.txt");
                     resultArea.setText(results); // Display the results in the GUI
                 } catch (IOException ex) {
                     resultArea.setText("Error executing search: " + ex.getMessage());
                 }
             }
         });
-
-
-
-
 
         // Clear button functionality to reset the search field and result area
         clearButton.addActionListener(new ActionListener() {
@@ -113,17 +111,5 @@ public class SearchGUI {
         frame.add(panel);
         frame.setLocationRelativeTo(null);  // Center the window
         frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        // Initialize App instance
-        App app = new App();
-        app.connect("localhost:33060", 0);
-
-        // Run the GUI in the Event Dispatch Thread
-        SwingUtilities.invokeLater(() -> {
-            SearchGUI searchGUI = new SearchGUI(app);
-            searchGUI.createAndShowGUI();
-        });
     }
 }

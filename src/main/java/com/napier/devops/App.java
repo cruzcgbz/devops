@@ -162,6 +162,83 @@ public class App {
             System.out.println("Failed to get details");
         }
     }
+    public String searchCountryByFields(String searchTerm, String searchType, String outputFile) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        String sql = "";
+
+        // Define the SQL query based on the selected search type
+        switch (searchType) {
+            case "Code":
+                sql = "SELECT code, name, continent, region, population FROM country WHERE code LIKE ?";
+                break;
+            case "Name":
+                sql = "SELECT code, name, continent, region, population FROM country WHERE name LIKE ?";
+                break;
+            case "Continent":
+                sql = "SELECT code, name, continent, region, population FROM country WHERE continent LIKE ?";
+                break;
+            case "Region":
+                sql = "SELECT code, name, continent, region, population FROM country WHERE region LIKE ?";
+                break;
+            case "Population":
+                sql = "SELECT code, name, continent, region, population FROM country WHERE population LIKE ?";
+                break;
+            case "Search by All Fields":
+                sql = "SELECT code, name, continent, region, population FROM country WHERE code LIKE ? OR name LIKE ? OR continent LIKE ? OR region LIKE ? OR population LIKE ?";
+                break;
+            default:
+                sql = "SELECT code, name, continent, region, population FROM country WHERE name LIKE ?";
+                break;
+        }
+
+        try (PreparedStatement stmt = con.prepareStatement(sql)) {
+            // Set the parameters for the query based on the search type
+            if (searchType.equals("Search by All Fields")) {
+                // Search across all fields
+                stmt.setString(1, "%" + searchTerm + "%");
+                stmt.setString(2, "%" + searchTerm + "%");
+                stmt.setString(3, "%" + searchTerm + "%");
+                stmt.setString(4, "%" + searchTerm + "%");
+                stmt.setString(5, "%" + searchTerm + "%");
+            } else {
+                // Search by specific field (only one parameter is needed)
+                stmt.setString(1, "%" + searchTerm + "%");
+            }
+
+            ResultSet rset = stmt.executeQuery();
+
+            // Check if any results were returned
+            if (!rset.isBeforeFirst()) {
+                sb.append("No results found for: ").append(searchTerm);
+            } else {
+                // Add headers for the table
+                sb.append(String.format("%-10s %-30s %-20s %-20s %-15s\n", "Code", "Name", "Continent", "Region", "Population"));
+                sb.append("--------------------------------------------------------------\n");
+
+                // Iterate through results and display in tabular format
+                while (rset.next()) {
+                    String code = rset.getString("code");
+                    String name = rset.getString("name");
+                    String continent = rset.getString("continent");
+                    String region = rset.getString("region");
+                    int population = rset.getInt("population");
+
+                    sb.append(String.format("%-10s %-30s %-20s %-20s %-15d\n", code, name, continent, region, population));
+                }
+            }
+
+            // Write to file (optional)
+            writeToFile(sb.toString(), outputFile);
+
+        } catch (SQLException e) {
+            System.err.println("Failed to execute search query: " + e.getMessage());
+        }
+
+        // Return the results as a String to display in the GUI
+        return sb.toString();
+    }
+
+
 
 
 
